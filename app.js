@@ -20,9 +20,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log(err);
     });
 
-    console.log(dbURI)
-
-// URL Main Routes
+    // URL Main Routes
 app.get('/', (req, res) => {
     res.redirect('/blogs');
 });
