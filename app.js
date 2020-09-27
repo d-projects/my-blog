@@ -22,7 +22,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
     console.log(dbURI)
 
-// URL Non-Blog Routes
+// URL Main Routes
 app.get('/', (req, res) => {
     res.redirect('/blogs');
 });
@@ -35,14 +35,19 @@ app.get('/contact', (req, res) => {
     res.render('contact');
 });
 
+// URL Admin Routes
 app.get('/admin', (req, res) => {
     if (req.query.message){
         res.render('admin', { message: req.query.message });
     } else {
         res.render('admin');
     }
-    
 });
+
+app.get('/admin-login', (req, res) => {
+    res.render('admin-login');
+});
+
 
 
 // URL Blog Specific Routes
