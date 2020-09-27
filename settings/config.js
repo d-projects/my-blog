@@ -1,8 +1,12 @@
+/*
+ * Note that this file is a template
+ */
+
 const config = {
-    db_user: 'dulhan',
-    db_password: 'uqGCOJnuo7FIjYP1',
-    db_cluster: 'blogapp',
-    db_name: 'blog-db'
+    db_user: 'fake-user',
+    db_password: 'fake-password',
+    db_cluster: 'fake-cluster',
+    db_name: 'fake-database'
 }
 
 module.exports = config;
