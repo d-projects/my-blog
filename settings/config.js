@@ -1,3 +1,7 @@
+/*
+ * Note that this file is simply a template of the config file
+ */
+
 const config = {
     db_user: 'fake-username',
     db_password: 'fake-password',
