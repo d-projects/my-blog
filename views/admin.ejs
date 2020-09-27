@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('./partials/head') %> 
+</head>
+<body>
+    <%- include ('./partials/nav') %>
+    <div class = "container">
+        <% if (typeof message !== 'undefined') { %>
+            <div class="alert alert-success" role="alert">
+                <%= message %>
+            </div>
+        <% } %>
+        <h1> Create a Post </h1>
+        <!-- <label for="createTitle">
+            <input name = "newTitle" type = "text" id = "createTitle">
+        </label>
+
+        <label for="createBody">
+            <textarea name = "newBody" type = "text" id = "createbody" rows="20" cols="50"></textarea>
+        </label> -->
+
+        <form action = "/admin", method = "POST">
+            <div class="form-group">
+                <label for="createTitle">Blog Title</label>
+                <input type="text" class="form-control" name="title" id="createTitle" placeholder="Enter Title">
+            </div>
+            <div class="form-group">
+                <label for="chooseTopic">Blog Topic</label>
+                <input type="text" class="form-control" name="topic" id="chooseTopic">
+            </div>
+            <div class="form-group">
+                <label for="createBody">Blog Content</label>
+                <textarea class="form-control" name="body" id="createBody" placeholder="Enter Blog Content" rows="10"> </textarea>
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Post</button>
+        </form>
+    </div>
+
+    <%- include ('./partials/bottom_scripts') %>
+</body>
+</html>

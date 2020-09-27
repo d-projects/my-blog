@@ -7,14 +7,23 @@
     
     <%- include ('./partials/nav') %>
 
-    <div class = "container"> 
-        <h3>Blog 1</h3>
-        <p> Date Created: 09/09/20</p>
-        <hr>
+    <div class = "container">
 
-        <div>
-            <p>Blog Content</p>
-        </div>
+        <% blogs.forEach( blog => { %>
+
+            <article>
+                <h3><%= blog.title %></h3>
+                <p> Date Created: <%= moment(blog.createdAt).format('dddd, DD MMMM YYYY') %></p>
+                <hr>
+
+                <div>
+                    <p><%= blog.body %></p>
+                </div>
+            </article>
+            <br> <br> <br>
+
+        <% }); %>
+
     </div>
 
     <%- include ('./partials/bottom_scripts') %>
