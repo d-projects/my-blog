@@ -2,13 +2,19 @@ const config = require('./settings/config.js');
 const express = require('express');
 const mongoose = require('mongoose');
 const Blog = require('./models/blog.js');
+const User = require('./models/user.js');
 const moment = require('moment');
+const session = require('express-session');
+const bodyParser = require('body-parser');
 
-// set up express and view engine (ejs)
+// set up express
 const app = express();
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true}));
 app.set('view engine', 'ejs');
+app.use(session({secret: config.session_secret, saveUninitialized: true, resave: true}));
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
 
 // connects to MongoDB
 const dbURI = `mongodb+srv://${config.db_user}:${config.db_password}@${config.db_cluster}.ffgxc.mongodb.net/${config.db_name}`;
@@ -35,17 +41,60 @@ app.get('/contact', (req, res) => {
 
 // URL Admin Routes
 app.get('/admin', (req, res) => {
-    if (req.query.message){
-        res.render('admin', { message: req.query.message });
-    } else {
+    if (req.session.loggedIn === true) {
         res.render('admin');
+    } else {
+        res.render('admin-login');
     }
 });
 
 app.get('/admin-login', (req, res) => {
-    res.render('admin-login');
+    const failMessage = req.query.message;
+    res.render('admin-login', { message: failMessage });
 });
 
+app.post('/validate', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const query = { username: username };
+    const options = {
+        projection: { username: 1, password: 1 }
+    };
+    User.findOne(query)
+    .then(result => {
+        console.log(result);
+        if (result && result.username === username && result.password === password){
+            req.session.loggedIn = true;
+            req.session.user = username;
+            res.redirect('admin');
+        } else {
+            const uriParameter = encodeURIComponent('That username and/or password is incorrect');
+            res.redirect('admin-login?message=' + uriParameter);
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    });
+
+})
+
+app.post('/admin', (req, res) => {
+    const blogData = req.body;
+    const blog = new Blog({
+        title: blogData.title,
+        body: blogData.body
+    });
+    blog.save()
+    .then ( result => {
+        const uriParameter = encodeURIComponent('Success!');
+        res.redirect('/admin?message=' + uriParameter);
+    })
+    .catch ( err => {
+        console.log(err);
+        // const uriParameter = encodeURIComponent('There seems to have been an error');
+        // res.redirect('/admin?message=' + uriParameter);
+    });
+});
 
 
 // URL Blog Specific Routes
@@ -58,22 +107,6 @@ app.get('/blogs', (req, res) => {
         res.send(err);
     });
     
-});
-
-// POST Routes
-app.post('/admin', (req, res) => {
-    const blogData = req.body;
-    const blog = new Blog({
-        title: blogData.title,
-        body: blogData.body
-    });
-    blog.save()
-    .then ( result => {
-        res.redirect('/admin?message=Success!');
-    })
-    .catch ( err => {
-        console.log(err);
-    });
 });
 
 app.use((req, res) => {
