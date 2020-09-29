@@ -1,11 +1,3 @@
-#createTitle {
-    width: 50%;
-}
-
-#chooseTopic {
-    width: 50%;
-}
-
 #username {
     width: 20%;
 }
@@ -13,3 +5,35 @@
 #password {
     width: 20%;
 }
+
+.icon {
+    padding: 5px 10px 5px 0;
+}
+
+.container{
+    margin-bottom: 50px;
+}
+
+.create{
+    float: right;
+}
+
+.fa-eye{
+    color:green;
+}
+
+.fa-edit{
+    color: orange;
+}
+
+.fa-trash{
+    color: red;
+}
+
+.fa:hover{
+    color: blue;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.createModal {

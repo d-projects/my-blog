@@ -28,7 +28,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
     // URL Main Routes
 app.get('/', (req, res) => {
-    res.redirect('/blogs');
+    res.redirect('blogs');
 });
 
 app.get('/about', (req, res) => {
@@ -42,7 +42,13 @@ app.get('/contact', (req, res) => {
 // URL Admin Routes
 app.get('/admin', (req, res) => {
     if (req.session.loggedIn === true) {
-        res.render('admin');
+        Blog.find()
+        .then (result => {
+            res.render('admin', {blogs: result});
+        })
+        .catch (err => {
+            res.send(err);
+        });
     } else {
         res.render('admin-login');
     }
@@ -62,7 +68,6 @@ app.post('/validate', (req, res) => {
     };
     User.findOne(query)
     .then(result => {
-        console.log(result);
         if (result && result.username === username && result.password === password){
             req.session.loggedIn = true;
             req.session.user = username;
@@ -93,6 +98,19 @@ app.post('/admin', (req, res) => {
         console.log(err);
         // const uriParameter = encodeURIComponent('There seems to have been an error');
         // res.redirect('/admin?message=' + uriParameter);
+    });
+});
+
+app.delete('/admin/delete/:id', (req, res) => {
+    const deleteId = req.params.id;
+
+    Blog.findByIdAndDelete(deleteId)
+    .then ( result => {
+        const message = 'Success!';
+        res.send(message);
+    })
+    .catch ( err => {
+        console.log(err);
     });
 });
 

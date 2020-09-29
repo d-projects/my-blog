@@ -11,24 +11,172 @@
                 <%= message %>
             </div>
         <% } %>
-        <h1> Create a Post </h1>
-        <form action = "/admin", method = "POST">
-            <div class="form-group">
-                <label for="createTitle">Blog Title</label>
-                <input type="text" class="form-control" name="title" id="createTitle" placeholder="Enter Title">
+        <div class = "row">
+       
+
+        <div class = "col-6">
+            <h1> All Posts </h1>
+            <ul class = "list-group">
+                <% blogs.forEach(blog => { %>
+                    <li class = "list-group-item"><%= blog.title %><br>
+                        <i class="fa fa-eye fa-lg icon" onClick="showViewModal()"></i>
+                        <i class="fa fa-edit fa-lg icon" onClick="showEditModal()"></i>
+                        <i class="fa fa-trash fa-lg icon" onClick="showConfirmModal()"></i>
+                        <input type="hidden" data-id="<%= blog._id %>" id="deleteId">
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+
+        <div class = "col-6">
+
+        <button type="button" class="btn btn-primary create" onClick = "showCreateModal()">Create a post</button>
+
+        </div>
+
+
+        </div>
+    </div>
+
+    <!-- View Modal -->
+
+    <div id="viewModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">View</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              
             </div>
-            <div class="form-group">
-                <label for="chooseTopic">Blog Topic</label>
-                <input type="text" class="form-control" name="topic" id="chooseTopic">
+            <div class="modal-body">
+              <p>Some text in the modal.</p>
             </div>
-            <div class="form-group">
-                <label for="createBody">Blog Content</label>
-                <textarea class="form-control" name="body" id="createBody" placeholder="Enter Blog Content" rows="10"> </textarea>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
-            <button type="submit" class="btn btn-outline-primary">Post</button>
-        </form>
+          </div>
+      
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              
+            </div>
+            <div class="modal-body">
+              <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+    </div>
+
+    <!-- Confirmation Modal (for deleting a post) -->
+
+    <div id="confirmModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Are You Sure?</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              
+            </div>
+            <div class="modal-body">
+                <button type="button" class="btn btn-danger" onClick="deleteId()">Delete</button>
+                <input type="hidden" id="modalDeleteId" value="">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+    </div>
+
+    <!-- Create Modal (for creating a post) -->
+
+    <div id="createModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Create a Post</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              
+            </div>
+            <div class="modal-body">
+                <form action = "/admin", method = "POST">
+                    <div class="form-group">
+                        <label for="createTitle">Blog Title</label>
+                        <input type="text" class="form-control w-50" name="title" id="createTitle" placeholder="Enter Title">
+                    </div>
+                    <div class="form-group">
+                        <label for="chooseTopic">Blog Topic</label>
+                        <input type="text" class="form-control w-50" name="topic" id="chooseTopic">
+                    </div>
+                    <div class="form-group">
+                        <label for="createBody">Blog Content</label>
+                        <textarea class="form-control" name="body" id="createBody" placeholder="Enter Blog Content" rows="10"> </textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Post</button>
+                </form>
+            </div>
+
+          </div>
+      
+        </div>
     </div>
 
     <%- include ('./partials/bottom_scripts') %>
+
+    <script>
+        const showViewModal = () =>{
+            $('#viewModal').modal('show');
+        }
+        const showEditModal = () =>{
+            $('#editModal').modal('show');
+        }
+        const showConfirmModal = () =>{
+            $('#confirmModal').modal('show');
+            const deleteId = document.querySelector('#deleteId').dataset.id;
+            const modalDeleteInput = document.querySelector('#modalDeleteId');
+            modalDeleteId.value = deleteId;
+        }
+        const showCreateModal = () =>{
+            $('#createModal').modal('show');
+        }
+
+        const deleteId = () => {
+            const deleteId = document.querySelector('#modalDeleteId').value;
+            const deletePath = 'admin/delete/' + deleteId;
+            fetch(deletePath, {method: 'DELETE'})
+            .then( result => {
+                window.location.replace('admin');
+                // Todo: Send a success message
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+
+
+
+    </script>
 </body>
 </html>
