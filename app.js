@@ -44,7 +44,7 @@ app.get('/admin', (req, res) => {
     if (req.session.loggedIn === true) {
         Blog.find()
         .then (result => {
-            res.render('admin', {blogs: result});
+            res.render('admin', {blogs: result, moment: moment});
         })
         .catch (err => {
             res.send(err);

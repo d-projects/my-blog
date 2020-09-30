@@ -21,8 +21,11 @@
                     <li class = "list-group-item"><%= blog.title %><br>
                         <i class="fa fa-eye fa-lg icon" onClick="showViewModal()"></i>
                         <i class="fa fa-edit fa-lg icon" onClick="showEditModal()"></i>
-                        <i class="fa fa-trash fa-lg icon" onClick="showConfirmModal()"></i>
-                        <input type="hidden" data-id="<%= blog._id %>" id="deleteId">
+                        <i class="fa fa-trash fa-lg icon" name="id" data-id="<%= blog._id %>" onClick="showConfirmModal()"></i>
+                        <input type="hidden" data-id="<%= blog._id %>" id="blog-id">
+                        <input type="hidden" data-title="<%= blog.title %>" id="blog-title">
+                        <input type="hidden" data-date="<%= moment(blog.createdAt).format('dddd, DD MMMM YYYY') %>" id="blog-date">
+                        <input type="hidden" data-body="<%= blog.body %>" id="blog-body">
                     </li>
                 <% }) %>
             </ul>
@@ -41,7 +44,7 @@
     <!-- View Modal -->
 
     <div id="viewModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
       
           <!-- Modal content-->
           <div class="modal-content">
@@ -51,7 +54,10 @@
               
             </div>
             <div class="modal-body">
-              <p>Some text in the modal.</p>
+              <div class = "view-title"> </div>
+              <div class = "view-date"> </div>
+              <hr>
+              <div class = "view-body"> </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -64,7 +70,7 @@
     <!-- Edit Modal -->
 
     <div id="editModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
       
           <!-- Modal content-->
           <div class="modal-content">
@@ -97,7 +103,7 @@
               
             </div>
             <div class="modal-body">
-                <button type="button" class="btn btn-danger" onClick="deleteId()">Delete</button>
+                <button type="button" class="btn btn-danger" onClick="deleteBlog()">Delete</button>
                 <input type="hidden" id="modalDeleteId" value="">
             </div>
             <div class="modal-footer">
@@ -145,26 +151,31 @@
 
     <%- include ('./partials/bottom_scripts') %>
 
-    <script>
+     <script>
         const showViewModal = () =>{
             $('#viewModal').modal('show');
+            // const title = document.querySelector('#blog-title').dataset.title;
+            // const date = document.querySelector('#blog-date').dataset.date;
+            // const body = document.querySelector('#blog-body').dataset.body;
+            // document.querySelector('.view-title').innerHTML = '<h3>' + title + '</h3>';
+            // document.querySelector('.view-date').innerHTML = '<p>' + date + '</p>';
+            // document.querySelector('.view-body').innerHTML = '<p>' + body + '<p>';
         }
         const showEditModal = () =>{
             $('#editModal').modal('show');
         }
-        const showConfirmModal = () =>{
+        const showConfirmModal = (id) =>{
             $('#confirmModal').modal('show');
-            const deleteId = document.querySelector('#deleteId').dataset.id;
             const modalDeleteInput = document.querySelector('#modalDeleteId');
-            modalDeleteId.value = deleteId;
+            modalDeleteId.value = id;
         }
         const showCreateModal = () =>{
             $('#createModal').modal('show');
         }
 
-        const deleteId = () => {
-            const deleteId = document.querySelector('#modalDeleteId').value;
-            const deletePath = 'admin/delete/' + deleteId;
+        const deleteBlog = () => {
+            const idToDelete = document.querySelector('#modalDeleteId').value;
+            const deletePath = 'admin/delete/' + idToDelete;
             fetch(deletePath, {method: 'DELETE'})
             .then( result => {
                 window.location.replace('admin');
@@ -174,6 +185,14 @@
                 console.log(err);
             });
         }
+
+        document.addEventListener('click', (e) => {
+          const element = e.target;
+          if (element.getAttribute('name') == 'id'){
+            showConfirmModal(element.dataset.id);
+          }
+        });
+        
 
 
 
