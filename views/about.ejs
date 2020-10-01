@@ -7,11 +7,37 @@
     <%- include ('./partials/nav') %>
 
     <div class = "container">
-        <h1> About Me </h1>
+        <div class = "row">
+            <div class = "col-8">
+                <h1> About Me </h1>
+                <br>
+
+                <p>
+                    Hey, my name is Dulhan! I'm currently a student studying Engineering at the University of Waterloo. 
+                    I'm very passionate about programming and have delved into a lot of areas related to it, including 
+                    web development, machine learning, and a bit of embedded development. 
+                </p>
+                <p>
+                    I love learning new things (especially when it comes to learning a new programming framework!). I plan
+                    to grow as a programmer in the next few year before I graduate by doing internships, building side 
+                    projects, and taking part in hackathons and programming related clubs!
+                </p>
+            </div>
+            <div class = "col-4">
+                <!-- <img src="images/photo-of-me.jpg" alt="A photo of myself" id="photo-of-me"> -->
+                <img src="images/photo-of-me.jpg" alt="..." class="img-fluid">
+            </div>
+
+        </div>
+
     </div>
 
 
     <%- include ('./partials/bottom_scripts') %>
+    <footer class="footer-no-nav footer" role="contentinfo">
+           <p>Copyright &copy Dulhan N.W. <%= new Date().getFullYear() %> </p>               
+    </footer>
     
 </body>
+
 </html>

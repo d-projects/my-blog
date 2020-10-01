@@ -3,6 +3,16 @@
 <head>
     <%- include ('./partials/head') %> 
 </head>
+
+<!-- To Do:
+  - get request for viewing
+  - spaces between paragraphs
+  - mobile friendly
+  - MVC
+  - dropdown for topic / add topic option
+  - option to sort by topic on home page
+-->
+
 <body>
     <%- include ('./partials/nav') %>
     <div class = "container">
@@ -19,13 +29,9 @@
             <ul class = "list-group">
                 <% blogs.forEach(blog => { %>
                     <li class = "list-group-item"><%= blog.title %><br>
-                        <i class="fa fa-eye fa-lg icon" onClick="showViewModal()"></i>
-                        <i class="fa fa-edit fa-lg icon" onClick="showEditModal()"></i>
-                        <i class="fa fa-trash fa-lg icon" name="id" data-id="<%= blog._id %>" onClick="showConfirmModal()"></i>
-                        <input type="hidden" data-id="<%= blog._id %>" id="blog-id">
-                        <input type="hidden" data-title="<%= blog.title %>" id="blog-title">
-                        <input type="hidden" data-date="<%= moment(blog.createdAt).format('dddd, DD MMMM YYYY') %>" id="blog-date">
-                        <input type="hidden" data-body="<%= blog.body %>" id="blog-body">
+                        <i class="fa fa-eye fa-lg icon" name="view" data-blog="<%= JSON.stringify(blog) %>" data-date-formatted="<%= moment(blog.createdAt).format('dddd, DD MMMM YYYY') %>"></i>
+                        <i class="fa fa-edit fa-lg icon" name="edit" data-blog="<%= JSON.stringify(blog) %>" %>"></i>
+                        <i class="fa fa-trash fa-lg icon" name="id" data-id="<%= blog._id %>"></i>
                     </li>
                 <% }) %>
             </ul>
@@ -43,7 +49,7 @@
 
     <!-- View Modal -->
 
-    <div id="viewModal" class="modal fade" role="dialog">
+    <div id="view-modal" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
       
           <!-- Modal content-->
@@ -59,9 +65,6 @@
               <hr>
               <div class = "view-body"> </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
           </div>
       
         </div>
@@ -69,7 +72,7 @@
 
     <!-- Edit Modal -->
 
-    <div id="editModal" class="modal fade" role="dialog">
+    <div id="edit-modal" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
       
           <!-- Modal content-->
@@ -80,10 +83,22 @@
               
             </div>
             <div class="modal-body">
-              <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <form action = "admin/update" method = "POST">
+                <input type="hidden" name="id" id="edit-id">
+                <div class="form-group">
+                    <label for="edit-title">Blog Title</label>
+                    <input type="text" class="form-control w-50" name="title" id="edit-title" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="edit-topic">Blog Topic</label>
+                    <input type="text" class="form-control w-50" name="topic" id="edit-topic" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="edit-body">Blog Content</label>
+                    <textarea class="form-control" name="body" id="edit-body" placeholder="" rows="10"> </textarea>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Make Changes</button>
+            </form>
             </div>
           </div>
       
@@ -92,7 +107,7 @@
 
     <!-- Confirmation Modal (for deleting a post) -->
 
-    <div id="confirmModal" class="modal fade" role="dialog">
+    <div id="confirm-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
       
           <!-- Modal content-->
@@ -106,9 +121,6 @@
                 <button type="button" class="btn btn-danger" onClick="deleteBlog()">Delete</button>
                 <input type="hidden" id="modalDeleteId" value="">
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
           </div>
       
         </div>
@@ -116,7 +128,7 @@
 
     <!-- Create Modal (for creating a post) -->
 
-    <div id="createModal" class="modal fade" role="dialog">
+    <div id="create-modal" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
       
           <!-- Modal content-->
@@ -127,18 +139,18 @@
               
             </div>
             <div class="modal-body">
-                <form action = "/admin", method = "POST">
+                <form action = "/admin" method = "POST">
                     <div class="form-group">
-                        <label for="createTitle">Blog Title</label>
-                        <input type="text" class="form-control w-50" name="title" id="createTitle" placeholder="Enter Title">
+                        <label for="create-title">Blog Title</label>
+                        <input type="text" class="form-control w-50" name="title" id="create-title" placeholder="Enter Title">
                     </div>
                     <div class="form-group">
-                        <label for="chooseTopic">Blog Topic</label>
-                        <input type="text" class="form-control w-50" name="topic" id="chooseTopic">
+                        <label for="choose-topic">Blog Topic</label>
+                        <input type="text" class="form-control w-50" name="topic" id="choose-topic">
                     </div>
                     <div class="form-group">
-                        <label for="createBody">Blog Content</label>
-                        <textarea class="form-control" name="body" id="createBody" placeholder="Enter Blog Content" rows="10"> </textarea>
+                        <label for="create-body">Blog Content</label> <!-- CHECK HERE (for and id use '-')-->
+                        <textarea class="form-control" name="body" id="create-body" placeholder="Enter Blog Content" rows="10"> </textarea>
                     </div>
                     <button type="submit" class="btn btn-outline-primary">Post</button>
                 </form>
@@ -152,25 +164,28 @@
     <%- include ('./partials/bottom_scripts') %>
 
      <script>
-        const showViewModal = () =>{
-            $('#viewModal').modal('show');
-            // const title = document.querySelector('#blog-title').dataset.title;
-            // const date = document.querySelector('#blog-date').dataset.date;
-            // const body = document.querySelector('#blog-body').dataset.body;
-            // document.querySelector('.view-title').innerHTML = '<h3>' + title + '</h3>';
-            // document.querySelector('.view-date').innerHTML = '<p>' + date + '</p>';
-            // document.querySelector('.view-body').innerHTML = '<p>' + body + '<p>';
+        const showViewModal = (blogJSON, date) =>{
+            $('#view-modal').modal('show');
+            blog = JSON.parse(blogJSON);
+            document.querySelector('.view-title').innerHTML = `<h3> ${blog.title} </h3>`;
+            document.querySelector('.view-date').innerHTML = `<p> ${date} </p>`;
+            document.querySelector('.view-body').innerHTML = `<p> ${blog.body} </p>`;
         }
-        const showEditModal = () =>{
-            $('#editModal').modal('show');
+        const showEditModal = (blogJSON) =>{
+            $('#edit-modal').modal('show');
+            blog = JSON.parse(blogJSON);
+            document.querySelector('#edit-id').value = blog._id;
+            document.querySelector('#edit-title').value = blog.title;
+            document.querySelector('#edit-topic').value = blog.topic;
+            document.querySelector('#edit-body').value = blog.body;
         }
         const showConfirmModal = (id) =>{
-            $('#confirmModal').modal('show');
+            $('#confirm-modal').modal('show');
             const modalDeleteInput = document.querySelector('#modalDeleteId');
             modalDeleteId.value = id;
         }
         const showCreateModal = () =>{
-            $('#createModal').modal('show');
+            $('#create-modal').modal('show');
         }
 
         const deleteBlog = () => {
@@ -190,6 +205,10 @@
           const element = e.target;
           if (element.getAttribute('name') == 'id'){
             showConfirmModal(element.dataset.id);
+          } else if (element.getAttribute('name') == 'view'){
+            showViewModal(element.dataset.blog, element.dataset.dateFormatted);
+          } else if (element.getAttribute('name') == 'edit'){
+            showEditModal(element.dataset.blog);
           }
         });
         

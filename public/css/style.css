@@ -35,3 +35,24 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+#photo-of-me{
+    width: 100px;
+    height: 100px;
+}
+
+.footer-no-nav {
+    border-top: 1px solid #000000;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height:40px;
+    margin-top:-41px;
+}
+
+body,html{
+ height:100%;
+}
+.container{
+ min-height:100%;
+}

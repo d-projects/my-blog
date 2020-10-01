@@ -87,9 +87,33 @@ app.post('/admin', (req, res) => {
     const blogData = req.body;
     const blog = new Blog({
         title: blogData.title,
+        topic: blogData.topic,
         body: blogData.body
     });
     blog.save()
+    .then ( result => {
+        const uriParameter = encodeURIComponent('Success!');
+        res.redirect('/admin?message=' + uriParameter);
+    })
+    .catch ( err => {
+        console.log(err);
+        // const uriParameter = encodeURIComponent('There seems to have been an error');
+        // res.redirect('/admin?message=' + uriParameter);
+    });
+});
+
+app.post('/admin/update', (req, res) => {
+    const updateData = req.body;
+    console.log("here");
+    const id = {
+        _id: updateData.id
+    }
+    const toUpdate = {
+        title: updateData.title,
+        topic: updateData.topic,
+        body: updateData.body
+    };
+    Blog.findByIdAndUpdate(id, toUpdate)
     .then ( result => {
         const uriParameter = encodeURIComponent('Success!');
         res.redirect('/admin?message=' + uriParameter);
