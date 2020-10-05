@@ -6,6 +6,7 @@ const User = require('./models/user.js');
 const moment = require('moment');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const Topic = require('./models/topics.js');
 
 // set up express
 const app = express();
@@ -42,13 +43,21 @@ app.get('/contact', (req, res) => {
 // URL Admin Routes
 app.get('/admin', (req, res) => {
     if (req.session.loggedIn === true) {
-        Blog.find()
-        .then (result => {
-            res.render('admin', {blogs: result, moment: moment});
+        Topic.find()
+        .then (result => {       
+           const topics = result;
+           Blog.find()
+           .then (result => {
+               res.render('admin', {blogs: result, moment: moment, uniqueTopics: topics});
+           })
+           .catch (err => {
+               res.send(err);
+           });
         })
-        .catch (err => {
+        .catch(err => {
             res.send(err);
         });
+
     } else {
         res.render('admin-login');
     }

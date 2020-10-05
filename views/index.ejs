@@ -13,11 +13,12 @@
 
             <article>
                 <h3><%= blog.title %></h3>
+                <h6> Topic: <%= blog.topic %></h6>
                 <p> Date Created: <%= moment(blog.createdAt).format('dddd, DD MMMM YYYY') %></p>
                 <hr>
 
                 <div>
-                    <p><%= blog.body %></p>
+                    <p class = "spaces" overflow><%= blog.body %></p>
                 </div>
             </article>
             <br> <br> <br>

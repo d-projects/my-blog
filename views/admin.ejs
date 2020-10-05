@@ -6,11 +6,10 @@
 
 <!-- To Do:
   - get request for viewing
-  - spaces between paragraphs
   - mobile friendly
   - MVC
-  - dropdown for topic / add topic option
   - option to sort by topic on home page
+  - find functions (db) deprecated, change these
 -->
 
 <body>
@@ -61,6 +60,7 @@
             </div>
             <div class="modal-body">
               <div class = "view-title"> </div>
+              <div class = "view-topic"> </div>
               <div class = "view-date"> </div>
               <hr>
               <div class = "view-body"> </div>
@@ -146,7 +146,11 @@
                     </div>
                     <div class="form-group">
                         <label for="choose-topic">Blog Topic</label>
-                        <input type="text" class="form-control w-50" name="topic" id="choose-topic">
+                        <select class="form-control w-50" name = "topic" id = "choose-topic">
+                          <% uniqueTopics.forEach(topic => { %>
+                            <option value="<%= topic.topic %>"> <%= topic.topic %> </option>
+                          <% }) %>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="create-body">Blog Content</label> <!-- CHECK HERE (for and id use '-')-->
@@ -168,8 +172,9 @@
             $('#view-modal').modal('show');
             blog = JSON.parse(blogJSON);
             document.querySelector('.view-title').innerHTML = `<h3> ${blog.title} </h3>`;
+            document.querySelector('.view-topic').innerHTML = `<h6> ${blog.topic} </h6>`;
             document.querySelector('.view-date').innerHTML = `<p> ${date} </p>`;
-            document.querySelector('.view-body').innerHTML = `<p> ${blog.body} </p>`;
+            document.querySelector('.view-body').innerHTML = `<p class = "spaces"> ${blog.body} </p>`;
         }
         const showEditModal = (blogJSON) =>{
             $('#edit-modal').modal('show');
