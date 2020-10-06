@@ -7,6 +7,9 @@ const moment = require('moment');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const Topic = require('./models/topics.js');
+const nodemailer = require('nodemailer');
+const { render } = require('ejs');
+const { getMaxListeners } = require('./models/blog.js');
 
 // set up express
 const app = express();
@@ -146,6 +149,48 @@ app.delete('/admin/delete/:id', (req, res) => {
         console.log(err);
     });
 });
+
+app.post('/contact', (req, res) => {
+    const userName = req.body.name;
+    const userEmail = req.body.email;
+    const subject = req.body.subject;
+    const body = req.body.body;
+    
+
+
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
+            //service: 'gmail',
+            auth: {
+                user: config.email,
+                pass: config.password
+            }
+        });
+        
+
+        emailData = {
+            from: config.email,
+            to: config.email,
+            subject: subject,
+            text: body
+        };
+
+
+        transporter.sendMail( emailData, function (err, emailRes) {
+            if (err){
+                console.log(err);
+            } else {
+                console.log(emailRes);
+            }
+        });
+
+
+
+
+    res.redirect('/contact');
+;})
 
 
 // URL Blog Specific Routes
