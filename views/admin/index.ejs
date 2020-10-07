@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include ('./partials/head') %> 
+    <%- include ('../partials/head') %> 
 </head>
 
 <!-- To Do:
@@ -10,10 +10,11 @@
   - MVC
   - option to sort by topic on home page
   - find functions (db) deprecated, change these
+  -- public-ip install (for contact page)
 -->
 
 <body>
-    <%- include ('./partials/nav') %>
+    <%- include ('../partials/nav') %>
     <div class = "container">
         <% if (typeof message !== 'undefined') { %>
             <div class="alert alert-success" role="alert">
@@ -139,7 +140,7 @@
               
             </div>
             <div class="modal-body">
-                <form action = "/admin" method = "POST">
+                <form action = "/admin/create" method = "POST">
                     <div class="form-group">
                         <label for="create-title">Blog Title</label>
                         <input type="text" class="form-control w-50" name="title" id="create-title" placeholder="Enter Title">
@@ -165,7 +166,7 @@
         </div>
     </div>
 
-    <%- include ('./partials/bottom_scripts') %>
+    <%- include ('../partials/bottom_scripts') %>
 
      <script>
         const showViewModal = (blogJSON, date) =>{
