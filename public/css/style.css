@@ -61,3 +61,12 @@ body,html{
     white-space: pre-wrap;
 }
 
+.dark-mode {
+    background-color: black !important;
+    color: white !important;
+}
+
+.hr-dark-mode {
+    background-color: white;
+}
+
