@@ -8,6 +8,7 @@ const adminRoutes = require('./routes/adminRoutes.js');
 const homeRoutes = require('./routes/homeRoutes.js');
 
 const { getMaxListeners } = require('./models/blog.js');
+const port = process.env.PORT || 3000;
 
 // Set up express
 const app = express();
@@ -23,8 +24,8 @@ app.use(bodyParser.json());
 const dbURI = `mongodb+srv://${config.db_user}:${config.db_password}@${config.db_cluster}.ffgxc.mongodb.net/${config.db_name}`;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {
+        app.listen(port);
         console.log('connected');
-        app.listen(3000);
     }).catch(err => {
         console.log(err);
     });
