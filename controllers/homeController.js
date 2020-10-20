@@ -6,7 +6,7 @@ const config = require('../settings/config.js');
 
 
 const home_index = (req, res) => {
-    Blog.find()
+    Blog.find().sort({createdAt: -1})
     .then (result => {
         res.render('index', {blogs: result, moment: moment});
     })
