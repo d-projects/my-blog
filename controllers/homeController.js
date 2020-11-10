@@ -8,7 +8,7 @@ const config = require('../settings/config.js');
 const home_index = (req, res) => {
     Blog.find().sort({createdAt: -1})
     .then (result => {
-        res.render('index', {blogs: result, moment: moment});
+        res.render('index', {title: 'Blogs', blogs: result, moment: moment});
     })
     .catch (err => {
         res.send(err);
@@ -16,11 +16,11 @@ const home_index = (req, res) => {
 };
 
 const home_about_get = (req, res) => {
-    res.render('about');
+    res.render('about', {title: 'About'});
 };
 
 const home_contact_get = (req, res) => {
-    res.render('contact');
+    res.render('contact', {title: 'Contact'});
 };
 
 const home_contact_post = (req, res) => {

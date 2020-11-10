@@ -10,7 +10,7 @@ const admin_index = (req, res) => {
            const topics = result;
            Blog.find()
            .then (result => {
-               res.render('admin/index', {blogs: result, moment: moment, uniqueTopics: topics});
+               res.render('admin/index', {title: 'Admin', blogs: result, moment: moment, uniqueTopics: topics});
            })
            .catch (err => {
                res.send(err);
@@ -27,7 +27,7 @@ const admin_index = (req, res) => {
 
 const admin_login_get = (req, res) => {
     const failMessage = req.query.message;
-    res.render('admin/login', { message: failMessage });
+    res.render('admin/login', {title: 'Admin Login', message: failMessage});
 };
 
 const admin_validate_post = (req, res) => {
