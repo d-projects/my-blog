@@ -8,7 +8,6 @@
   - get request for viewing
   - mobile friendly
   - MVC
-  - option to sort by topic on home page
   - find functions (db) deprecated, change these
   -- public-ip install (for contact page)
 -->
@@ -92,7 +91,7 @@
                 </div>
                 <div class="form-group">
                     <label for="edit-topic">Blog Topic</label>
-                    <input type="text" class="form-control w-50" name="topic" id="edit-topic" placeholder="">
+                    <input type="text" class="form-control" name="topic" id="edit-topic" placeholder="">
                 </div>
                 <div class="form-group">
                     <label for="edit-body">Blog Content</label>
@@ -147,14 +146,10 @@
                     </div>
                     <div class="form-group">
                         <label for="choose-topic">Blog Topic</label>
-                        <select class="form-control w-50" name = "topic" id = "choose-topic">
-                          <% uniqueTopics.forEach(topic => { %>
-                            <option value="<%= topic.topic %>"> <%= topic.topic %> </option>
-                          <% }) %>
-                        </select>
+                        <input type="text" class="form-control w-50" name="topic" id="create-topic" placeholder="Enter Title">
                     </div>
                     <div class="form-group">
-                        <label for="create-body">Blog Content</label> <!-- CHECK HERE (for and id use '-')-->
+                        <label for="create-body">Blog Content</label>
                         <textarea class="form-control" name="body" id="create-body" placeholder="Enter Blog Content" rows="10"> </textarea>
                     </div>
                     <button type="submit" class="btn btn-outline-primary">Post</button>
@@ -167,6 +162,10 @@
     </div>
 
     <%- include ('../partials/bottom_scripts') %>
+
+    <footer class="footer-no-nav footer" role="contentinfo">
+      <p> Made by Dulhan N.W. <%= new Date().getFullYear() %> </p>               
+    </footer>
 
      <script>
         const showViewModal = (blogJSON, date) =>{
@@ -201,9 +200,6 @@
             .then( result => {
                 window.location.replace('admin');
                 // Todo: Send a success message
-            })
-            .catch(err => {
-                console.log(err);
             });
         }
 

@@ -1,3 +1,3 @@
 # my-blog
-This is a small blogging application that I created using node.js.
-I will use it to write about future projects that I complete.
+This is a small blogging web application that I created.
+I am currently using it to write about side projects that I complete. You can visit it <a herf = "https://dulhans-blog.herokuapp.com">here</a>.

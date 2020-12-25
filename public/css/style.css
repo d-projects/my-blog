@@ -50,11 +50,16 @@
     margin-top:-41px;
 }
 
-body,html{
+body, html{
     height:100%;
 }
+
 .container{
     min-height:100%;
+}
+
+.blog-link {
+    padding: 10px;
 }
 
 .spaces{
@@ -70,3 +75,12 @@ body,html{
     background-color: white;
 }
 
+pre {
+    display:block;
+    border-radius: 5px;
+    overflow:auto;
+    width:700px;
+    padding:10px;
+    background:#E0E0E0;
+    margin:2em 0;
+}

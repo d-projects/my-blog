@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('./partials/head') %>  
+</head>
+<body>
+    
+    <%- include ('./partials/nav') %>
+
+    <div class = "container">
+
+        <h2><%= blogPost.title %></h2>
+        <h5> <%= blogPost.topic %></h5>
+        <p> Date Created: <%= moment(blogPost.createdAt).format('dddd, DD MMMM YYYY') %></p>
+        <hr>
+        <div>
+            <p class = "spaces" overflow><%- blogPost.body %></p>
+        </div>
+
+    </div>
+
+    <br> <br>
+
+    <%- include ('./partials/bottom_scripts') %>
+
+    <footer class = "footer-no-nav footer" role = "contentinfo">
+        <p>Made by Dulhan N.W. <%= new Date().getFullYear() %> </p>               
+    </footer>
+
+</body>
+</html>
