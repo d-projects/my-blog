@@ -16,13 +16,13 @@ const displayMode = (mode) => {
     }
   }
 
-  const switchMode = () => {
+  document.getElementById("toggle-dark").addEventListener("click", () => {
     let mode = localStorage.getItem('mode');
     if (mode == 'light') mode = 'dark';
     else mode = 'light';
     localStorage.setItem('mode', mode);
     displayMode(mode);
-  }
+  });
 
   const removeClasses = () => {
     document.body.classList.remove("dark-mode");

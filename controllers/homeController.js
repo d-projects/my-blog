@@ -26,8 +26,8 @@ const home_blog_get = (req, res) => {
     Blog.findById(req.params.id)
     .then (result => {
         if (result) {
-            const connectedTitle = result.title.replace(' ', '-');
-            res.render('blog', {title: connectedTitle, blogPost: result, moment: moment});
+            //const connectedTitle = result.title.replace(' ', '-');
+            res.render('blog', {title: result.title, blogPost: result, moment: moment});
         } else {
             res.render('404', {title: 'Error'});
         }
